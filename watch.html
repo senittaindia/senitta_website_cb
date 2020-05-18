@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<body>
+<script>
+// function getLocation() {
+//   if (navigator.geolocation) {
+//     id = navigator.geolocation.watchPosition(showPosition);
+//   } else { 
+//     alert("Geolocation is not supported by this browser.");
+//   }
+// }
+    
+function showPosition(position) {console.log(position);
+    let tday = today();
+    let data = localStorage.getItem(tday);
+    let ll = localStorage.getItem("lastLocation");
+    if(data == undefined)tdata = [];
+    else tdata = JSON.parse(data); 
+    let ts = Math.round((new Date()).getTime() / 1000);
+    if( ll!= undefined){
+        ll = parseInt(ll) + (60*4);
+    }else{
+       ll = 0; 
+    }
+    if(ts>ll){
+        let loc = {
+            time: new Date().toLocaleString(),
+            lat: position.coords.latitude,
+            lon: position.coords.longitude
+        }
+        tdata.push(loc);
+        localStorage.setItem(tday, JSON.stringify(tdata));
+        localStorage.setItem('lastLocation', ts);
+    }
+}
+function today(){
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    
+    return mm + '/' + dd + '/' + yyyy;
+}
+// getLocation();
+  if (window.navigator.geolocation) {
+    id = window.navigator.geolocation.watchPosition(showPosition);
+  } else { 
+    alert("Geolocation is not supported by this browser.");
+  }
+</script>
+</body>
+</html>
